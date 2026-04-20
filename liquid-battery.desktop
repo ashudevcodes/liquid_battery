@@ -1,0 +1,10 @@
+[Xfce Panel]
+Type=X-XFCE-PanelPlugin
+Name=Liquid Battery
+Comment=Animated battery indicator
+Icon=battery
+
+X-XFCE-Module=liquid-battery
+X-XFCE-Internal=false
+
+X-XFCE-API=2.0
