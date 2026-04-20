@@ -203,7 +203,7 @@ static gboolean draw(GtkWidget *widget, cairo_t *cr, gpointer data) {
   int height = gtk_widget_get_allocated_height(widget);
 
   /* Scale geometry to widget height */
-  double batt_h = height * 0.65;
+  double batt_h = height * 0.69;
   double batt_h_min = 8.0;
   if (batt_h < batt_h_min)
     batt_h = batt_h_min;

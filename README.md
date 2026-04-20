@@ -1,5 +1,7 @@
 # liquid-battery
 
+<kdb><img src="./assets/plugin_image.png"/></kdb>
+
 Animated battery indicator for the XFCE4 panel. Draws a liquid wave that fills and sloshes based on charge level and state.
 
 ## Features
