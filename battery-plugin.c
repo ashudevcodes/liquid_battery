@@ -13,13 +13,13 @@
 #define UPOWER_STATE_DISCHARGING 2
 #define UPOWER_STATE_FULL 4
 
-/* ── Drawing constants (scaled at runtime) ──────────────────────────────── */
-#define NUB_RATIO 0.35   /* nub_h  = battery_h * NUB_RATIO  */
+#define NUB_RATIO 0.18   /* nub_h  = battery_h * NUB_RATIO  */
 #define NUB_W_RATIO 0.12 /* nub_w  = battery_h * NUB_W_RATIO */
 #define PAD_RATIO 0.14   /* pad    = battery_h * PAD_RATIO   */
-#define CORNER_OUTER_RATIO 0.22
-#define CORNER_INNER_RATIO 0.16
-#define LINE_WIDTH 1.8
+
+#define CORNER_OUTER_RATIO 0
+#define CORNER_INNER_RATIO 0.20
+#define LINE_WIDTH 0
 
 #define WAVE_PHASE_STEP 0.15
 #define TICK_MS 33 /* ~30 fps */
@@ -81,6 +81,11 @@ static gboolean get_uint(GDBusProxy *proxy, const char *name, guint *out) {
   return ok;
 }
 
+/*
+ * this function is for extracting TimeToEmpty for UPOWER_BUS
+ * it also return bool values which tells is TimeToEmpty is there or not in
+ * UPOWER_BUS
+ * */
 static gboolean get_int64(GDBusProxy *proxy, const char *name, gint64 *out) {
   GVariant *v = g_dbus_proxy_get_cached_property(proxy, name);
   if (!v)
@@ -129,9 +134,9 @@ static void update_tooltip(Battery *b) {
       if (e->time_to_full > 0) {
         int h = e->time_to_full / 3600;
         int m = (e->time_to_full % 3600) / 60;
-        g_string_append_printf(tip, " — charging (%dh:%02dm remaining)", h, m);
+        g_string_append_printf(tip, " — full charging in (%dh:%02dm)", h, m);
       } else {
-        g_string_append(tip, " — charging");
+        g_string_append(tip, " — fully charged");
       }
     } else {
       if (e->time_to_empty > 0) {
@@ -203,7 +208,7 @@ static gboolean draw(GtkWidget *widget, cairo_t *cr, gpointer data) {
   int height = gtk_widget_get_allocated_height(widget);
 
   /* Scale geometry to widget height */
-  double batt_h = height * 0.69;
+  double batt_h = height * 0.90;
   double batt_h_min = 8.0;
   if (batt_h < batt_h_min)
     batt_h = batt_h_min;
@@ -216,20 +221,20 @@ static gboolean draw(GtkWidget *widget, cairo_t *cr, gpointer data) {
 
   double total_w = batt_w + nub_w + 1.0;
   double x = total_w / 2.0;
-  double y = (height - batt_h) / 2.0;
+  double y = height * 0.2;
 
   cairo_set_line_width(cr, LINE_WIDTH);
-  cairo_set_source_rgb(cr, 1, 1, 1);
+  cairo_set_source_rgb(cr, 0.62, 0.62, 0.62);
 
-  batt_h = height * 0.65;
+  batt_h = height * 0.70;
   batt_w = height * 1.1;
 
   /* Outer outline */
-  cairo_save(cr);
+  /* cairo_save(cr);
   cairo_translate(cr, x, y);
   rounded_rect(cr, batt_w, batt_h, corner_out);
   cairo_stroke(cr);
-  cairo_restore(cr);
+  cairo_restore(cr); */
 
   /* Nub */
   cairo_set_source_rgb(cr, 1, 1, 1);
@@ -300,7 +305,7 @@ static gboolean tick(gpointer data) {
 
 static gboolean on_enter(GtkWidget *w, GdkEventCrossing *e, gpointer data) {
   Battery *b = data;
-  b->interaction_force = MIN(b->interaction_force + 0.6, FORCE_MAX);
+  b->interaction_force = MIN(b->interaction_force + 1, FORCE_MAX);
   return FALSE;
 }
 
