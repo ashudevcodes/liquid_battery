@@ -39,7 +39,7 @@ Files land in:
 - `~/.local/share/xfce4/panel/plugins/liquid-battery.desktop`
 
 After install,
-if you are using xfce4-panel then go to xfce4-panel **Panel Preferences → Items → ** then choos liquid-battery.
+if you are using xfce4-panel then go to xfce4-panel **Panel Preferences → Items →** then choos liquid-battery.
 else if you are in waybar go to you wayland config and add this
 ```
   "modules-right": [
