@@ -26,7 +26,7 @@ make xfce
 make waybar
 
 # install -> ~/.local/lib/waybar/modules/ OR ~/.local/lib/xfce4/panel/plugins/
-make install xfce
+make install-xfce
 make install-waybar
 
 # remove build dir and all installed files
@@ -39,9 +39,9 @@ Files land in:
 - `~/.local/share/xfce4/panel/plugins/liquid-battery.desktop`
 
 After install,
-if you are using xfce4-panel then go to xfce4-panel **Panel Preferences → Items → +** and choos liquid-battery.
+if you are using xfce4-panel then go to xfce4-panel **Panel Preferences → Items → ** then choos liquid-battery.
 else if you are in waybar go to you wayland config and add this
-``
+```
   "modules-right": [
 	"cffi/battery",
   ],
@@ -49,7 +49,7 @@ else if you are in waybar go to you wayland config and add this
   "cffi/battery": {
 	"module_path": "/home/<YOUR-USERNAME>/.local/lib/waybar/modules/libliquid-battery.so"
   }
-``
+```
 
 ## Notes
 
